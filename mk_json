@@ -1,0 +1,15 @@
+#!/usr/bin/perl
+
+use strict;
+use warnings;
+use feature 'say';
+
+use JSON;
+
+use DrWhoVid::Schema;
+
+my $sch = DrWhoVid::Schema->get_schema;
+
+my @videos = $sch->resultset('Video')->search(undef, { order_by => { '-desc' => 'release_date' }});
+
+say JSON->new->encode({ data => [ map { { $_->get_columns } } @videos] });
